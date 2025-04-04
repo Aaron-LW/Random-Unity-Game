@@ -1,5 +1,5 @@
 # Random Unity Game
- Its a game about spices and stuff
+ Its a game about spices and stuff\
  this is not finished and probably will never be finished because ill lose motivation in like 3 days or smth
  <br>
  <br>
