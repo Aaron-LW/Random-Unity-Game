@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -7,12 +6,18 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
 
     public CameraMovement Camera;
+    
+    [HideInInspector] public enum ToolType 
+    {
+        Pickaxe,
+        Axe
+    }
 
     [HideInInspector] public List<Inventory> Inventories = new List<Inventory>();
     [HideInInspector] public List<Item> Items = new List<Item>();
 
-    public List<InitItem> InitItems = new List<InitItem>();
-    public List<InitTool> InitTools = new List<InitTool>();
+    public List<InitItem> InitialisingItems = new List<InitItem>();
+    public List<InitTool> InitialisingTools = new List<InitTool>();
 
 
     [HideInInspector] public bool InitManagers = false;
@@ -35,8 +40,8 @@ public class InventoryManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        foreach (InitItem item in InitItems) { InitItem(item.Name, item.MaxStackSize, item.Sprite); }
-        foreach (InitTool tool in InitTools) { InitPickaxe(tool.Name, tool.MiningSpeed, tool.Sprite, tool.Model); }
+        foreach (InitItem item in InitialisingItems) { InitItem(item.Name, item.MaxStackSize, item.Sprite); }
+        foreach (InitTool tool in InitialisingTools) { InitTool(tool.Name, (ToolType)tool.MiningSpeed, tool.MiningSpeed, tool.Sprite, tool.Model, tool.MaxStackSize); }
 
         InitInventory(21, MainInventory, 1);
         InitInventory(7, HotbarInventory, 0);
@@ -53,11 +58,11 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            AddItem(GetItemIDbyName("Stone Pickaxe"), 1, 0);
+            AddItem(GetItemIDbyName("Pickaxe"), 1, 1);
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
-            RemoveItem(GetItemIDbyName("Stone Pickaxe"), 1, 0);
+            RemoveItem(GetItemIDbyName("Pickaxe"), 1, 1);
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -237,12 +242,12 @@ public class InventoryManager : MonoBehaviour
         Items.Add(new Item(Items.Count, Name, MaxStackSize, Sprite));
     }
 
-    void InitPickaxe(string Name, int MiningSpeed, Sprite Sprite = null, GameObject Model = null, Animator Animator = null)
+    void InitTool(string Name, ToolType Type, float MiningSpeed, Sprite Sprite = null, GameObject Modell = null, int MaxStackSize = 1)
     {
-        Items.Add(new Pickaxe(Items.Count, Name, Sprite, MiningSpeed, Model));
+        Items.Add(new Tool(Items.Count, Name, Type, MiningSpeed, Sprite, Modell, MaxStackSize));
     }
 
-    int GetItemIDbyName(string Name)
+    public int GetItemIDbyName(string Name)
     {
         for (int i = 0; i < Items.Count; i++)
         {
@@ -261,7 +266,6 @@ public class Item
     public int ID;
     public string Name;
     public int MaxStackSize;
-    public int Type;
     public Sprite Sprite;
 
     public Item(int id, string name, int maxstacksize, Sprite sprite = null)
@@ -273,17 +277,18 @@ public class Item
     }
 }
 
-public class Pickaxe : Item
+public class Tool : Item 
 {
+    public InventoryManager.ToolType Type;
     public float MiningSpeed;
     public GameObject Model;
-
-    public Pickaxe(int id, string name, Sprite sprite, float miningspeed, GameObject model, int maxstacksize = 1) : base(id, name, maxstacksize, sprite)
+    
+    public Tool(int id, string name, InventoryManager.ToolType type, float miningspeed, Sprite sprite = null, GameObject model = null, int maxstacksize = 1) : base(id, name, maxstacksize, sprite)
     {
         ID = id;
         Name = name;
         MaxStackSize = maxstacksize;
-        Sprite = sprite;
+        Type = type;
         MiningSpeed = miningspeed;
         Model = model;
     }
@@ -337,14 +342,13 @@ public class InitItem
 [System.Serializable]
 public class InitTool : InitItem
 {
-    public int MiningSpeed;
+    public InventoryManager.ToolType Type;
+    public float MiningSpeed;
     public GameObject Model;
-
-    public InitTool(int id, string name, int maxstacksize, int miningspeed = 0, Sprite sprite = null, GameObject model = null) : base(id, name, maxstacksize, sprite)
+    
+    public InitTool(int id, string name, InventoryManager.ToolType type, float miningspeed, Sprite sprite = null, GameObject model = null, int maxstacksize = 1) : base(id, name, maxstacksize, sprite)
     {
-        Name = name;
-        MaxStackSize = maxstacksize;
-        Sprite = sprite;
+        Type = type;
         MiningSpeed = miningspeed;
         Model = model;
     }

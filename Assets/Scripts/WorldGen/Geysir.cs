@@ -1,20 +1,36 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class Geysir : MonoBehaviour
 {
     public ParticleSystem partikel;
+    public int random;
 
-    [HideInInspector] public Spice spice;
+    public Spice spice;
+
+    public float returnMultiplier;
+    public enum Quality
+    {
+        Low,
+        Medium,
+        High
+    }
+    
+    public Quality quality;
 
     int countDown;
+
+    void Awake()
+    {
+        random = Random.Range(0, SpiceManager.Instance.returnMultipliers.Length);
+    }
 
     void Start()
     {
         countDown = Random.Range(1000, 5000);
         spice = SpiceManager.Instance.Spices[Random.Range(0, SpiceManager.Instance.Spices.Count)];
+        
+        returnMultiplier = SpiceManager.Instance.returnMultipliers[random];
+        quality = (Quality)random;
 
         if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 50))
         {

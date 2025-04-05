@@ -496,6 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d8c76f01443df6684f1c41ec47001e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitParticle: {fileID: 4332548136959586753, guid: 63fe97eaa5b830b179d4f0abe10bafdd, type: 3}
   Camera: {fileID: 179903227}
   InteractionDistance: 5
   InteractionLayer:
@@ -1647,26 +1648,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 214361830}
-  InitItems:
+  InitialisingItems:
   - Name: Blank
     MaxStackSize: 0
     Sprite: {fileID: 0}
-  - Name: Wood
-    MaxStackSize: 999
-    Sprite: {fileID: 21300000, guid: d2b343dbb32a2f93cb26efa908d88544, type: 3}
-  - Name: Stone
-    MaxStackSize: 999
-    Sprite: {fileID: 21300000, guid: 454a27fe424f3105388baead6952f983, type: 3}
   - Name: Salt
     MaxStackSize: 999
     Sprite: {fileID: 21300000, guid: 0dab7867e2f448cbb8d7c1a7f9a51672, type: 3}
   - Name: Chili
     MaxStackSize: 999
     Sprite: {fileID: 21300000, guid: 22be490703099bf0a9e2802de9549674, type: 3}
-  InitTools:
-  - Name: Stone Pickaxe
+  InitialisingTools:
+  - Name: Pickaxe
     MaxStackSize: 1
     Sprite: {fileID: 21300000, guid: d158cffd8c37ab034ae55f6a5f54ac3e, type: 3}
+    Type: 0
     MiningSpeed: 1
     Model: {fileID: 977377650}
   InitManagers: 0
@@ -1717,11 +1713,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b87e4f8c3e0e391588648465a6b234dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  returnMultipliers:
+  - 0.4
+  - 1
+  - 1.5
   Spices:
   - Name: Salt
     Color: {r: 1, g: 1, b: 1, a: 0}
+    returnValue: 10
   - Name: Chili
     Color: {r: 0.6698113, g: 0.125724, b: 0.08530616, a: 0}
+    returnValue: 3
 --- !u!4 &2141438139
 Transform:
   m_ObjectHideFlags: 0

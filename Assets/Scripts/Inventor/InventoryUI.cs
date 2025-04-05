@@ -46,7 +46,7 @@ public class InventoryUI : MonoBehaviour
             {
                 if (InventoryManager.Instance.CurrHotbarSlot == i)
                 {
-                    if (CurrItem is Pickaxe pickaxe) { HandManager.Instance.SetHandItem(pickaxe); }
+                    if (CurrItem is Tool tool) { HandManager.Instance.SetHandItem(tool); }
                     else { HandManager.Instance.ResetHandItem(); }
 
                     if (CurrEnabledOutline != null) { CurrEnabledOutline.enabled = false; }
