@@ -31,12 +31,12 @@ public class HandManager : MonoBehaviour
     public void ResetHandItem()
     {
         if (CurrActiveToolModel != null) { CurrActiveToolModel.SetActive(false); CurrActiveToolModel = null; }
-        CurrActiveTool = null;
+        CurrActiveTool = InventoryManager.Instance.Items[InventoryManager.Instance.GetItemIDbyName("Fist")] as Tool;
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && CurrActiveTool != null)
+        if (Input.GetMouseButton(0) && CurrActiveTool != null && InteractionManager.Instance.CanMine)
         {
             InteractionManager.Instance.Interact(CurrActiveTool);
         }

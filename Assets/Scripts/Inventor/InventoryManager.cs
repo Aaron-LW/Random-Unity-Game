@@ -9,6 +9,7 @@ public class InventoryManager : MonoBehaviour
     
     [HideInInspector] public enum ToolType 
     {
+        Fist,
         Pickaxe,
         Axe
     }
@@ -41,7 +42,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         foreach (InitItem item in InitialisingItems) { InitItem(item.Name, item.MaxStackSize, item.Sprite); }
-        foreach (InitTool tool in InitialisingTools) { InitTool(tool.Name, (ToolType)tool.MiningSpeed, tool.MiningSpeed, tool.Sprite, tool.Model, tool.MaxStackSize); }
+        foreach (InitTool tool in InitialisingTools) { InitTool(tool.Name, (ToolType)tool.MiningCooldown, tool.MiningCooldown, tool.yieldMultiplier, tool.Sprite, tool.Model, tool.MaxStackSize); }
 
         InitInventory(21, MainInventory, 1);
         InitInventory(7, HotbarInventory, 0);
@@ -52,6 +53,8 @@ public class InventoryManager : MonoBehaviour
 
         InventoryUI.Instance.UpdateInventory(0);
         InventoryUI.Instance.UpdateInventory(1);
+
+        if (!HotbarInventory.activeSelf) { HotbarInventory.SetActive(true); }
     }
 
     void Update()
@@ -242,9 +245,9 @@ public class InventoryManager : MonoBehaviour
         Items.Add(new Item(Items.Count, Name, MaxStackSize, Sprite));
     }
 
-    void InitTool(string Name, ToolType Type, float MiningSpeed, Sprite Sprite = null, GameObject Modell = null, int MaxStackSize = 1)
+    void InitTool(string Name, ToolType Type, float MiningSpeed, float yieldMultiplier, Sprite Sprite = null, GameObject Modell = null, int MaxStackSize = 1)
     {
-        Items.Add(new Tool(Items.Count, Name, Type, MiningSpeed, Sprite, Modell, MaxStackSize));
+        Items.Add(new Tool(Items.Count, Name, Type, MiningSpeed, yieldMultiplier, Sprite, Modell, MaxStackSize));
     }
 
     public int GetItemIDbyName(string Name)
@@ -280,16 +283,18 @@ public class Item
 public class Tool : Item 
 {
     public InventoryManager.ToolType Type;
-    public float MiningSpeed;
+    public float MiningCooldown;
+    public float yieldMultiplier;
     public GameObject Model;
     
-    public Tool(int id, string name, InventoryManager.ToolType type, float miningspeed, Sprite sprite = null, GameObject model = null, int maxstacksize = 1) : base(id, name, maxstacksize, sprite)
+    public Tool(int id, string name, InventoryManager.ToolType type, float miningcooldown, float yieldmultiplier, Sprite sprite = null, GameObject model = null, int maxstacksize = 1) : base(id, name, maxstacksize, sprite)
     {
         ID = id;
         Name = name;
         MaxStackSize = maxstacksize;
         Type = type;
-        MiningSpeed = miningspeed;
+        MiningCooldown = miningcooldown;
+        yieldMultiplier = yieldmultiplier;
         Model = model;
     }
 }
@@ -328,7 +333,7 @@ public class Inventory
 public class InitItem
 {
     public string Name;
-    public int MaxStackSize;
+    [HideInInspector] public int MaxStackSize;
     public Sprite Sprite;
 
     public InitItem(int id, string name, int maxstacksize, Sprite sprite = null)
@@ -343,13 +348,15 @@ public class InitItem
 public class InitTool : InitItem
 {
     public InventoryManager.ToolType Type;
-    public float MiningSpeed;
+    public float MiningCooldown;
+    public float yieldMultiplier;
     public GameObject Model;
     
-    public InitTool(int id, string name, InventoryManager.ToolType type, float miningspeed, Sprite sprite = null, GameObject model = null, int maxstacksize = 1) : base(id, name, maxstacksize, sprite)
+    public InitTool(int id, string name, InventoryManager.ToolType type, float miningcooldown, float yieldmultiplier, Sprite sprite = null, GameObject model = null, [HideInInspector] int maxstacksize = 1) : base(id, name, maxstacksize, sprite)
     {
         Type = type;
-        MiningSpeed = miningspeed;
+        MiningCooldown = miningcooldown;
+        yieldMultiplier = yieldmultiplier;
         Model = model;
     }
 }

@@ -3,8 +3,10 @@ using UnityEngine;
 public class Geysir : MonoBehaviour
 {
     public ParticleSystem partikel;
+    
     public int random;
-
+    public int SpiceRandom;
+    
     public Spice spice;
 
     public float returnMultiplier;
@@ -22,13 +24,16 @@ public class Geysir : MonoBehaviour
     void Awake()
     {
         random = Random.Range(0, SpiceManager.Instance.returnMultipliers.Length);
+        
+        if (Random.Range(0, 4) <= 2) { SpiceRandom = 0; }
+        else { SpiceRandom = 1; }
     }
 
     void Start()
     {
         countDown = Random.Range(1000, 5000);
-        spice = SpiceManager.Instance.Spices[Random.Range(0, SpiceManager.Instance.Spices.Count)];
         
+        spice = SpiceManager.Instance.Spices[SpiceRandom];
         returnMultiplier = SpiceManager.Instance.returnMultipliers[random];
         quality = (Quality)random;
 
