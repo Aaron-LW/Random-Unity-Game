@@ -38,7 +38,7 @@ public class HandManager : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && CurrActiveTool != null && InteractionManager.Instance.CanMine)
         {
-            InteractionManager.Instance.Interact(CurrActiveTool);
+            InteractionManager.Instance.InteractWithMineable(CurrActiveTool);
         }
     }
 }

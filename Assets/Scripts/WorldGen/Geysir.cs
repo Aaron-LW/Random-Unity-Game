@@ -37,15 +37,6 @@ public class Geysir : MonoBehaviour
         returnMultiplier = SpiceManager.Instance.returnMultipliers[random];
         quality = (Quality)random;
 
-        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 50))
-        {
-            transform.position = hit.point;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         partikel.GetComponent<Renderer>().material.color = spice.Color;
     }
 

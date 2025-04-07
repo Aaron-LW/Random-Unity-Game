@@ -42,7 +42,9 @@ public class InteractionManager : MonoBehaviour
     {
         if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out RaycastHit hit, InteractionDistance, InteractionLayer))
         {
-            if (hit.collider.CompareTag("Geysir") && !SpiceStatViewer.activeSelf)
+            string Tag = hit.collider.tag;
+        
+            if (Tag == "Geysir" && !SpiceStatViewer.activeSelf)
             {
                 Geysir geysir = hit.collider.GetComponent<Geysir>();
             
@@ -58,7 +60,7 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
-    public void Interact(Tool tool)
+    public void InteractWithMineable(Tool tool)
     {
         if (!CanMine) { Debug.LogError("Tried to mine but was on cooldown"); return; }
     
@@ -72,6 +74,7 @@ public class InteractionManager : MonoBehaviour
                 InventoryManager.Instance.AddItem(InventoryManager.Instance.GetItemIDbyName(GeysirScript.spice.Name), Mathf.RoundToInt(GeysirScript.spice.returnValue * GeysirScript.returnMultiplier * tool.yieldMultiplier), 0);
 
                 StartCoroutine(MiningCooldown(tool.MiningCooldown));
+                return;
             }
         }
     }
