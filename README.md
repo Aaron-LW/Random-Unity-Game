@@ -26,3 +26,5 @@ I will probably never finish this because ill get bored in like 3 days or smth
 - Using the better tools to get more spices
 - More kinds of spices
 - Very Maybe cooking with spices
+
+all icons for the Items were downloaded from this website: https://game-icons.net/
