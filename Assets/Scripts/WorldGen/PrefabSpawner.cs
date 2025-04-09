@@ -55,6 +55,11 @@ public class PrefabSpawner : MonoBehaviour
                         {
                             InstantiatedPrefab.transform.position = new Vector3(InstantiatedPrefab.transform.position.x, hit.point.y, InstantiatedPrefab.transform.position.z);
                         }
+                        
+                        if (prefab.RandomZRotation) 
+                        {
+                            InstantiatedPrefab.transform.Rotate(new Vector3(0, 0, Random.Range(0, 360)));
+                        }
                     }
                     else 
                     {
@@ -72,13 +77,15 @@ public class PrefabSpawn
     public GameObject gameObject;
     public float Chance;
     public Vector3 Orientation;
-    public bool AdjustYPos = true;
+    public bool AdjustYPos;
+    public bool RandomZRotation;
 
-    public PrefabSpawn(GameObject gameobject, float chance, Vector3 orientation = new Vector3(), bool adjustypos = true)
+    public PrefabSpawn(GameObject gameobject, float chance, Vector3 orientation = new Vector3(), bool adjustypos = true, bool randomzrotation = true)
     {
         gameObject = gameobject;
         Chance = chance;
         Orientation = orientation;
         AdjustYPos = adjustypos;
+        RandomZRotation = randomzrotation;
     }
 }

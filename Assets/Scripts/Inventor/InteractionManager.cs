@@ -7,6 +7,11 @@ public class InteractionManager : MonoBehaviour
 
     public ParticleSystem hitParticle;
 
+    private string CurrLookingAtTag = null;
+    private GameObject CurrLookingAtGameObject = null;
+
+    [HideInInspector] public bool UIOpen = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -22,14 +27,14 @@ public class InteractionManager : MonoBehaviour
         InvokeRepeating("CheckForStuff", 0.1f, 0.1f);
     }
 
-    public Camera Camera;
+    public CameraMovement Camera;
 
     public float InteractionDistance;
 
     public LayerMask InteractionLayer;
 
     public GameObject SpiceStatViewer;
-    public GeysirStatViewer GeysirStatViewer;
+    [HideInInspector] public GeysirStatViewer GeysirStatViewer;
 
     [HideInInspector] public bool CanMine = true; 
 
@@ -38,11 +43,27 @@ public class InteractionManager : MonoBehaviour
         GeysirStatViewer = SpiceStatViewer.GetComponent<GeysirStatViewer>();
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E)) 
+        {
+            Interact(CurrLookingAtTag);
+        }
+        
+        if (Input.GetMouseButtonDown(1)) 
+        {
+            
+        }
+    }
+
     public void CheckForStuff() 
     {
         if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out RaycastHit hit, InteractionDistance, InteractionLayer))
         {
             string Tag = hit.collider.tag;
+
+            CurrLookingAtTag = Tag;
+            CurrLookingAtGameObject = hit.collider.gameObject;
         
             if (Tag == "Geysir" && !SpiceStatViewer.activeSelf)
             {
@@ -57,6 +78,8 @@ public class InteractionManager : MonoBehaviour
         else
         {
             if (SpiceStatViewer.activeSelf) { SpiceStatViewer.SetActive(false); }
+            CurrLookingAtTag = null;
+            CurrLookingAtGameObject = null;
         }
     }
 
@@ -79,6 +102,27 @@ public class InteractionManager : MonoBehaviour
         }
     }
     
+    public void Interact(string Tag) 
+    {
+        if (UIOpen) { CloseAllUIs(Tag); UIOpen = false; }
+        if (Tag == null) { return; }
+
+        if (Tag == "Terminal") 
+        {
+            TerminalManager.Instance.ToggleTerminal();
+            return;
+        }
+    }
+    
+    public void CloseAllUIs(string supposed) 
+    {
+        if (TerminalManager.Instance.TerminalOpen && supposed == null) { TerminalManager.Instance.ToggleTerminal(); }
+        if (supposed == null) { return; }
+    
+        if (InventoryManager.Instance.InventoryOpen && supposed != "Inventory") { InventoryManager.Instance.ToggleInventory(); }
+        if (TerminalManager.Instance.TerminalOpen && supposed != "Terminal") { TerminalManager.Instance.ToggleTerminal(); }
+    }
+    
     IEnumerator MiningCooldown(float seconds) 
     {
         CanMine = false;
@@ -86,4 +130,7 @@ public class InteractionManager : MonoBehaviour
 
         CanMine = true;
     }
+    
+    public void LockCamera() { Camera.enabled = false; Cursor.lockState = CursorLockMode.None;  Cursor.visible = true; }
+    public void UnlockCamera() { Camera.enabled = true; Cursor.lockState = CursorLockMode.Locked;  Cursor.visible = false; }
 }

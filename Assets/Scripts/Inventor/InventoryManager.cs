@@ -26,7 +26,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject MainInventory;
     public GameObject HotbarInventory;
 
-    private bool InventoryOpen = false;
+    [HideInInspector] public bool InventoryOpen = false;
 
     [HideInInspector] public int CurrHotbarSlot = 0;
 
@@ -70,20 +70,7 @@ public class InventoryManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (InventoryOpen)
-            {
-                MainInventory.SetActive(false);
-                InventoryOpen = false;
-
-                Camera.enabled = true;
-            }
-            else
-            {
-                MainInventory.SetActive(true);
-                InventoryOpen = true;
-
-                Camera.enabled = false;
-            }
+            ToggleInventory();
         }
 
         if (Input.mouseScrollDelta.y > 0 && CurrHotbarSlot > 0) { CurrHotbarSlot--; InventoryUI.Instance.UpdateInventory(1); }
@@ -261,6 +248,28 @@ public class InventoryManager : MonoBehaviour
         }
 
         return -1;
+    }
+    
+    public void ToggleInventory() 
+    {
+        InteractionManager.Instance.CloseAllUIs("Inventory");
+    
+        if (InventoryOpen)
+            {
+                MainInventory.SetActive(false);
+                InventoryOpen = false;
+                InteractionManager.Instance.UIOpen = false;
+
+                InteractionManager.Instance.UnlockCamera();
+            }
+            else
+            {
+                MainInventory.SetActive(true);
+                InventoryOpen = true;
+                InteractionManager.Instance.UIOpen = true;
+
+                InteractionManager.Instance.LockCamera();
+            }
     }
 }
 
