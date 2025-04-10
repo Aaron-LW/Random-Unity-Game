@@ -27,11 +27,13 @@ public class InteractionManager : MonoBehaviour
         InvokeRepeating("CheckForStuff", 0.1f, 0.1f);
     }
 
-    public CameraMovement Camera;
+    public Camera Camera;
+    public CameraMovement CameraMovement;
 
     public float InteractionDistance;
 
     public LayerMask InteractionLayer;
+    public LayerMask GroundLayer;
 
     public GameObject SpiceStatViewer;
     [HideInInspector] public GeysirStatViewer GeysirStatViewer;
@@ -49,11 +51,6 @@ public class InteractionManager : MonoBehaviour
         {
             Interact(CurrLookingAtTag);
         }
-        
-        if (Input.GetMouseButtonDown(1)) 
-        {
-            
-        }
     }
 
     public void CheckForStuff() 
@@ -64,7 +61,7 @@ public class InteractionManager : MonoBehaviour
 
             CurrLookingAtTag = Tag;
             CurrLookingAtGameObject = hit.collider.gameObject;
-        
+            
             if (Tag == "Geysir" && !SpiceStatViewer.activeSelf)
             {
                 Geysir geysir = hit.collider.GetComponent<Geysir>();
@@ -86,7 +83,7 @@ public class InteractionManager : MonoBehaviour
     public void InteractWithMineable(Tool tool)
     {
         if (!CanMine) { Debug.LogError("Tried to mine but was on cooldown"); return; }
-    
+
         if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out RaycastHit hit, InteractionDistance, InteractionLayer))
         {
             if (hit.collider.CompareTag("Geysir"))
@@ -131,6 +128,6 @@ public class InteractionManager : MonoBehaviour
         CanMine = true;
     }
     
-    public void LockCamera() { Camera.enabled = false; Cursor.lockState = CursorLockMode.None;  Cursor.visible = true; }
-    public void UnlockCamera() { Camera.enabled = true; Cursor.lockState = CursorLockMode.Locked;  Cursor.visible = false; }
+    public void LockCamera() { CameraMovement.enabled = false; Cursor.lockState = CursorLockMode.None;  Cursor.visible = true; }
+    public void UnlockCamera() { CameraMovement.enabled = true; Cursor.lockState = CursorLockMode.Locked;  Cursor.visible = false; }
 }

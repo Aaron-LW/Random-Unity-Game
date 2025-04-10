@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PrefabSpawner : MonoBehaviour
@@ -19,10 +18,10 @@ public class PrefabSpawner : MonoBehaviour
 
     void Start()
     {
-        GroundCollider = Ground.GetComponent<Collider>();
+        GroundCollider = Ground.GetComponent<TerrainCollider>();
 
-        GroundSizeX = GroundCollider.bounds.size.x;
-        GroundSizeZ = GroundCollider.bounds.size.z;
+        GroundSizeX = GroundCollider.bounds.size.x * 2;
+        GroundSizeZ = GroundCollider.bounds.size.z * 2;
 
         foreach (PrefabSpawn prefabSpawn in prefabSpawns)
         {
@@ -34,17 +33,17 @@ public class PrefabSpawner : MonoBehaviour
     {
         Collider prefabCollider = null;
         if (prefab.AdjustYPos) { prefabCollider = prefab.gameObject.transform.GetComponent<Collider>(); }
-    
-        for (float x = -(GroundSizeX / 2); x < GroundSizeX / 2; x++)
+
+        for (float x = 0; x < GroundSizeX / 2; x++)
         {
-            for (float z = -(GroundSizeZ / 2); z < GroundSizeZ / 2; z++)
+            for (float z = 0; z < GroundSizeZ / 2; z++)
             {
                 float zufall = Random.Range(0, 100000);
 
                 if (zufall <= prefab.Chance)
                 {
-                    GameObject InstantiatedPrefab = Instantiate(prefab.gameObject, new Vector3(x, Ground.transform.position.y + 1, z), Quaternion.Euler(prefab.Orientation));
-
+                    GameObject InstantiatedPrefab = Instantiate(prefab.gameObject, new Vector3(x, Ground.transform.position.y + GroundCheckDistance - 1, z), Quaternion.Euler(prefab.Orientation));
+                    
                     if (Physics.Raycast(InstantiatedPrefab.transform.position, Vector3.down, out RaycastHit hit, GroundCheckDistance, GroundLayer)) 
                     {
                         if (prefab.AdjustYPos && prefabCollider != null) 
