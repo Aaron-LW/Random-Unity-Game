@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PrefabSpawner : MonoBehaviour
 {
@@ -15,10 +16,16 @@ public class PrefabSpawner : MonoBehaviour
 
     [Header("Prefabs")]
     public List<PrefabSpawn> prefabSpawns;
+    
+    [HideInInspector] public enum Type 
+    {
+        Geysir,
+        Terminal
+    }
 
     void Start()
     {
-        GroundCollider = Ground.GetComponent<TerrainCollider>();
+        GroundCollider = Ground.GetComponent<MeshCollider>();
 
         GroundSizeX = GroundCollider.bounds.size.x * 2;
         GroundSizeZ = GroundCollider.bounds.size.z * 2;
@@ -38,7 +45,7 @@ public class PrefabSpawner : MonoBehaviour
         {
             for (float z = 0; z < GroundSizeZ / 2; z++)
             {
-                float zufall = Random.Range(0, 100000);
+                float zufall = UnityEngine.Random.Range(0, 100000);
 
                 if (zufall <= prefab.Chance)
                 {
@@ -55,9 +62,14 @@ public class PrefabSpawner : MonoBehaviour
                             InstantiatedPrefab.transform.position = new Vector3(InstantiatedPrefab.transform.position.x, hit.point.y, InstantiatedPrefab.transform.position.z);
                         }
                         
+                        if (prefab.AlignToNormal) 
+                        {
+                            InstantiatedPrefab.transform.rotation = Quaternion.LookRotation(InstantiatedPrefab.transform.forward, hit.normal);
+                        }
+                        
                         if (prefab.RandomZRotation) 
                         {
-                            InstantiatedPrefab.transform.Rotate(new Vector3(0, 0, Random.Range(0, 360)));
+                            InstantiatedPrefab.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(0, 360)));
                         }
                     }
                     else 
@@ -78,13 +90,17 @@ public class PrefabSpawn
     public Vector3 Orientation;
     public bool AdjustYPos;
     public bool RandomZRotation;
+    public bool AlignToNormal;
+    public PrefabSpawner.Type Type;
 
-    public PrefabSpawn(GameObject gameobject, float chance, Vector3 orientation = new Vector3(), bool adjustypos = true, bool randomzrotation = true)
+    public PrefabSpawn(GameObject gameobject, PrefabSpawner.Type type, float chance, bool adjustypos, bool randomzrotation, bool aligntonormal, Vector3 orientation = new Vector3())
     {
         gameObject = gameobject;
         Chance = chance;
         Orientation = orientation;
         AdjustYPos = adjustypos;
         RandomZRotation = randomzrotation;
+        AlignToNormal = aligntonormal;
+        Type = type;
     }
 }

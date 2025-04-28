@@ -5,6 +5,8 @@ public class TerminalUIManger : MonoBehaviour
 {
     public static TerminalUIManger Instance { get; private set; }
 
+    public Sprite MoneySprite;
+
     void Awake()
     {
         if (Instance == null) 
@@ -24,9 +26,16 @@ public class TerminalUIManger : MonoBehaviour
             Destroy(child.gameObject);
         }
         
-        for (int i = 0; i < 5 - 1; i++) 
+        for (int i = 0; i < Terminal.Trades.Count; i++) 
         {
             GameObject Entry = Instantiate(TerminalManager.Instance.TerminalEntry, TerminalManager.Instance.SellingSection.transform);
+            TerminalEntry terminalEntry = Entry.GetComponent<TerminalEntry>();
+
+            terminalEntry.SpiceImage.sprite = Terminal.Trades[i].Spice.Item.Sprite;
+            terminalEntry.SpiceAmountText.text = Terminal.Trades[i].Spice.Amount.ToString();
+
+            terminalEntry.MoneyImage.sprite = MoneySprite;
+            terminalEntry.MoneyAmountText.text = Terminal.Trades[i].ReturnValue.ToString();
         }
     } 
 }

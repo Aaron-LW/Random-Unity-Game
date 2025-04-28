@@ -12,8 +12,6 @@ public class TerminalManager : MonoBehaviour
 
     [HideInInspector] public bool TerminalOpen = false; 
 
-    public List<Terminal> Terminals = new List<Terminal>();
-
     void Awake()
     {
         if (Instance == null) 
@@ -27,10 +25,22 @@ public class TerminalManager : MonoBehaviour
 
         TerminalUI.SetActive(false);
 
-        Terminals.Add(new Terminal(Terminals.Count, 5, null));
     }
     
-    public void ToggleTerminal() 
+    public void OpenTerminal(Terminal Terminal) 
+    {
+        TerminalOpen = true;
+            InteractionManager.Instance.UIOpen = true;
+            InteractionManager.Instance.LockCamera();
+            
+            TerminalUI.SetActive(true);
+            
+            TerminalUIManger.Instance.UpdateTerminalUI(Terminal);
+            
+            return;
+    }
+    
+    public void CloseTerminal() 
     {
         if (TerminalOpen)  
         {
@@ -42,31 +52,16 @@ public class TerminalManager : MonoBehaviour
             
             return;
         }
-        
-        if (!TerminalOpen) 
-        {
-            TerminalOpen = true;
-            InteractionManager.Instance.UIOpen = true;
-            InteractionManager.Instance.LockCamera();
-            
-            TerminalUI.SetActive(true);
-            
-            TerminalUIManger.Instance.UpdateTerminalUI(Terminals[0]);
-            
-            return;
-        }
     }
 }
 
 public class Terminal 
 {
-    public int ID;
     public int SellSlots;
     public List<Trade> Trades = new List<Trade>();
 
-    public Terminal(int id, int sellslots, List<Trade> trades) 
+    public Terminal(int sellslots, List<Trade> trades) 
     {
-        ID = id;
         SellSlots = sellslots;
         Trades = trades;
     }

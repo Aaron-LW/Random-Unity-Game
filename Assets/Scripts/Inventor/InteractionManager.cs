@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -49,6 +50,15 @@ public class InteractionManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E)) 
         {
+            TerminalObject terminalObject = null;
+            if (CurrLookingAtGameObject != null) { CurrLookingAtGameObject.TryGetComponent<TerminalObject>(out terminalObject); }
+        
+            if (terminalObject != null) 
+            {
+                Interact(CurrLookingAtTag, terminalObject);
+                return;
+            }
+            
             Interact(CurrLookingAtTag);
         }
     }
@@ -99,25 +109,31 @@ public class InteractionManager : MonoBehaviour
         }
     }
     
-    public void Interact(string Tag) 
+    public void Interact(string Tag, TerminalObject terminalObject = null) 
     {
         if (UIOpen) { CloseAllUIs(Tag); UIOpen = false; }
         if (Tag == null) { return; }
 
         if (Tag == "Terminal") 
         {
-            TerminalManager.Instance.ToggleTerminal();
-            return;
+            if (TerminalManager.Instance.TerminalOpen) 
+            {
+                TerminalManager.Instance.CloseTerminal();
+            }
+            else 
+            {
+                TerminalManager.Instance.OpenTerminal(terminalObject.Terminal);
+            }
         }
     }
     
     public void CloseAllUIs(string supposed) 
     {
-        if (TerminalManager.Instance.TerminalOpen && supposed == null) { TerminalManager.Instance.ToggleTerminal(); }
+        if (TerminalManager.Instance.TerminalOpen && supposed == null) { TerminalManager.Instance.CloseTerminal(); }
         if (supposed == null) { return; }
     
         if (InventoryManager.Instance.InventoryOpen && supposed != "Inventory") { InventoryManager.Instance.ToggleInventory(); }
-        if (TerminalManager.Instance.TerminalOpen && supposed != "Terminal") { TerminalManager.Instance.ToggleTerminal(); }
+        if (TerminalManager.Instance.TerminalOpen && supposed != "Terminal") { TerminalManager.Instance.CloseTerminal(); }
     }
     
     IEnumerator MiningCooldown(float seconds) 
