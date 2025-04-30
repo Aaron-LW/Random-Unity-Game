@@ -8,6 +8,7 @@ I will probably never finish this because ill get bored in like 3 days or smth
 - F to give pickaxe
 - G to remove pickaxe
 - Left click on geysirs to mine
+- E on Terminals (yellow boxes) to sell spice
 <br>
 
 **How to install:**
@@ -21,7 +22,6 @@ I will probably never finish this because ill get bored in like 3 days or smth
 **Things im going to/want to add:**
 - Crafting System
 - Other ressources like Wood, Stone etc.
-- Selling spices for currency
 - using currency to unlock crafting recipes for better tools
 - Using the better tools to get more spices
 - More kinds of spices
