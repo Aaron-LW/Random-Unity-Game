@@ -13,6 +13,8 @@ public class InteractionManager : MonoBehaviour
 
     [HideInInspector] public bool UIOpen = false;
 
+    public AudioClip MineSound;
+
     private void Awake()
     {
         if (Instance == null)
@@ -102,7 +104,8 @@ public class InteractionManager : MonoBehaviour
 
                 Instantiate(hitParticle, hit.point, Quaternion.identity);
                 InventoryManager.Instance.AddItem(InventoryManager.Instance.GetItemIDbyName(GeysirScript.spice.Name), Mathf.RoundToInt(GeysirScript.spice.returnValue * GeysirScript.returnMultiplier * tool.yieldMultiplier), 0);
-
+                AudioManager.Instance.PlaySFX(MineSound);
+                
                 StartCoroutine(MiningCooldown(tool.MiningCooldown));
                 return;
             }

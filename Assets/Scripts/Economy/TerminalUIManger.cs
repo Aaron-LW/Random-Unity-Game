@@ -36,6 +36,8 @@ public class TerminalUIManger : MonoBehaviour
 
             terminalEntry.MoneyImage.sprite = MoneySprite;
             terminalEntry.MoneyAmountText.text = Terminal.Trades[i].ReturnValue.ToString();
+
+            terminalEntry.Trade = Terminal.Trades[i];
         }
     } 
 }

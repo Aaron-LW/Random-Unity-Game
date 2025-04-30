@@ -122,6 +122,9 @@ MonoBehaviour:
   SpiceAmountText: {fileID: 5476198482433250335}
   MoneyImage: {fileID: 7839147054026013675}
   MoneyAmountText: {fileID: 4562812069173167672}
+  SelfImage: {fileID: 0}
+  TerminalButtonDeny: {fileID: 8300000, guid: 61d58a9bcdd0b16efb4a862758d59b7b, type: 3}
+  TerminalButtonAccept: {fileID: 8300000, guid: dde048e1d79a02b7a984ab2eaf0d3af1, type: 3}
 --- !u!1 &1464354383592736128
 GameObject:
   m_ObjectHideFlags: 0
