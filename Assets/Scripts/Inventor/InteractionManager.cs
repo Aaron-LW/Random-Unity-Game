@@ -128,6 +128,11 @@ public class InteractionManager : MonoBehaviour
                 TerminalManager.Instance.OpenTerminal(terminalObject.Terminal);
             }
         }
+        
+        if (Tag == "CraftingTable") 
+        {
+            Debug.Log("CraftingTable");
+        }
     }
     
     public void CloseAllUIs(string supposed) 

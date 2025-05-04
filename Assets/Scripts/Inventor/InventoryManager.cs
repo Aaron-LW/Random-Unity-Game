@@ -59,15 +59,6 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            AddItem(GetItemIDbyName("Pickaxe"), 1, 1);
-        }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            RemoveItem(GetItemIDbyName("Pickaxe"), 1, 1);
-        }
-
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             ToggleInventory();
@@ -75,6 +66,11 @@ public class InventoryManager : MonoBehaviour
 
         if (Input.mouseScrollDelta.y > 0 && CurrHotbarSlot > 0) { CurrHotbarSlot--; InventoryUI.Instance.UpdateInventory(1); }
         if (Input.mouseScrollDelta.y < 0 && CurrHotbarSlot < Inventories[1].Slots - 1) { CurrHotbarSlot++; InventoryUI.Instance.UpdateInventory(1); }
+    }
+
+    void Start()
+    {
+        AddItem(GetItemIDbyName("Pickaxe"), 1, 1);
     }
 
     public void AddItem(int ID, int Amount, int InventoryIndex, bool Overflow = false)

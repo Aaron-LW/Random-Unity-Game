@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Geysir
   - Terminal
+  - CraftingTable
   layers:
   - Default
   - TransparentFX
